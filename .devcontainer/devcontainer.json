@@ -1,0 +1,9 @@
+{
+  "name": "MindSnap ProseMaster Development Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "forwardPorts": [
+    3000,
+    5000
+  ],
+  "postCreateCommand": "npm install --prefix client && npm install --prefix server"
+}
