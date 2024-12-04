@@ -3,7 +3,7 @@
   "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
   "forwardPorts": [
     3000,
-    5000
+    5173
   ],
   "postCreateCommand": "npm install --prefix client && npm install --prefix server"
 }
