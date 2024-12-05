@@ -14,9 +14,9 @@ Transform long texts into quick brilliance. Get summaries, essential keywords, a
    ```  
 
 3. **Add open ai api key**:
-   In the server folder, create a .env file and provide OPEN AI API KEY
+   In the server folder, create a .env file and provide gemini api key
    ```bash
-   OPENAI_API_KEY=
+   API_KEY=
    ```
 
 4. **Steps to Start the application**:
