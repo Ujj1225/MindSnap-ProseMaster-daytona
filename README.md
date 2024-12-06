@@ -26,11 +26,12 @@ The hassle free way to get started is by installing and running the code in dayt
    ```bash
    API_KEY=
    ```
+4. **Add port 5000 as forwarded port**
 
-4. **Steps to Start the application**:
+5. **Steps to Start the application**:
       Navigate to server side by: 
 
-   ```bash
+   ```bashg
    cd server 
    node app.js
    ```
