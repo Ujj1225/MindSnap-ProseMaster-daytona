@@ -3,11 +3,18 @@ const app = express();
 const cors = require("cors");
 const query = require("./routes/query");
 
-app.use(cors());
+require("dotenv").config();
+
+// CORS
+const corsOptions = {
+  origin: "http://localhost:3000", 
+  methods: ["GET", "POST", "PUT", "DELETE"], 
+  allowedHeaders: ["Content-Type", "Authorization"], 
+};
+
+app.use(cors(corsOptions)); 
 app.use(express.json());
 
-require("dotenv").config();
-  
 const port = process.env.PORT || 5000;
 
 app.use("/api/v1", query);
