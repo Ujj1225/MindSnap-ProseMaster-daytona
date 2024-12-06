@@ -21,7 +21,7 @@ The hassle free way to get started is by installing and running the code in dayt
    daytona create https://github.com/Ujj1225/MindSnap-ProseMaster-daytona.git 
    ```  
 
-3. **Add open ai api key**:
+3. **Add gemini ai api key**:
    In the server folder, create a .env file and provide gemini api key
    ```bash
    API_KEY=
