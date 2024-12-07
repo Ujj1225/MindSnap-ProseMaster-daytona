@@ -22,20 +22,12 @@ The hassle free way to get started is by installing and running the code in dayt
    ```  
 
 3. **Add gemini ai api key**:
-   In the server folder, create a .env file and provide gemini api key
+   In the client folder, there is a .env file where you'll need to provide gemini api key
    ```bash
-   API_KEY=
+   VITE_API_KEY=
    ```
-4. **Add port 5000 as forwarded port**
 
 5. **Steps to Start the application**:
-      Navigate to server side by: 
-
-   ```bashg
-   cd server 
-   node app.js
-   ```
-
    Navigate to client side by: 
 
    ```bash
