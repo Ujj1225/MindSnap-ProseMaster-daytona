@@ -1,6 +1,6 @@
 import { useState } from "react";
-
-import axios from "axios";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import "./App.css";
 
 const App = () => {
   const [inputText, setInputText] = useState("");
@@ -8,66 +8,109 @@ const App = () => {
   const [keyword, setKeyword] = useState("");
   const [mnemonics, setMnemonics] = useState("");
 
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
+
+  const formatResponse = (text) => text.replace(/\*/g, "").trim();
+
+  const formatKeywords = (text) => {
+    const cleanText = text.replace(/\*/g, "").trim();
+    const keywords = cleanText.split("\n").filter(Boolean);
+    return keywords.slice(0, 5).join(", ");
+  };
+
   const handleInputChange = (event) => {
     setInputText(event.target.value);
   };
 
   const handleApiReq = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/v1", {
-        prompt: inputText,
-      });
-      const { data } = response;
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-      setSummarizedText(data.summary);
-      setMnemonics(data.howToRemember);
-      setKeyword(data.keywords);
+      const [summarizeResponse, keywordResponse, mnemonicsResponse] =
+        await Promise.all([
+          model.generateContent(
+            `Summarize the following text in layman's terms with examples: 
+            ${inputText}`
+          ),
+          model.generateContent(
+            `From the following text, extract important words that we should remember and provide them in bullet form:
+            ${inputText}`
+          ),
+          model.generateContent(
+            `Create mnemonics or a simple story from the following text to help people remember it easily:
+            ${inputText}`
+          ),
+        ]);
+
+      setSummarizedText(
+        formatResponse(await summarizeResponse.response.text())
+      );
+      setKeyword(formatKeywords(await keywordResponse.response.text()));
+      setMnemonics(formatResponse(await mnemonicsResponse.response.text()));
     } catch (error) {
-      console.log(`Error getting response from API: ${error.message}`);
+      console.error(`Error calling Gemini API: ${error.message}`);
     }
   };
 
   return (
-    <>
-      <h1>MindSnap ProseMaster 🚀</h1>
-      <div className="app-container">
-        <div className="left-panel">
+    <div className="app">
+      <header className="app-header">
+        <h1>MindSnap ProseMaster 🚀</h1>
+        <p className="tagline">
+          Learn, simplify, and remember with AI-driven insights.
+        </p>
+      </header>
+      <main className="app-main">
+        <div className="input-section">
           <textarea
+            className="input-textarea"
             placeholder="Enter the text you wish to learn!"
             value={inputText}
             onChange={handleInputChange}
-            cols="30"
-            rows="10"
           />
-          <button onClick={handleApiReq} style={{ marginBottom: "0.5rem" }}>
+          <button className="primary-btn" onClick={handleApiReq}>
             Get Insights!
           </button>
-          <div className="text">
-            {" "}
-            To make the most out of this tool. Follow these steps: <br /> <br />
-            1. Skim through the summarized text <br />
-            2. Jot down the provided keywords <br />
-            3 Read the Trick to remember part <br />
-            <br />
-            Have fun learning 🔥
-          </div>
         </div>
-        <div className="right-panel">
-          <div className="box summary-box">
-            <h2>Summarized Text 📖</h2>
-            <div className="result-container">{summarizedText}</div>
-          </div>
-          <div className="box keyword-box">
-            <h2>Relevant Keywords 🌍</h2>
-            <div className="result-container">{keyword}</div>
-          </div>
-          <div className="box mnemonic-box">
-            <h2>Trick To Remember 💬</h2>
-            <div className="result-container">{mnemonics}</div>
-          </div>
+        <div className="results-section">
+          <ResultBox
+            title="Summarized Text 📖"
+            content={summarizedText}
+            size="large"
+          />
+          <ResultBox
+            title="Relevant Keywords 🌍"
+            content={keyword}
+            size="small"
+          />
+          <ResultBox
+            title="Trick To Remember 💬"
+            content={mnemonics}
+            size="medium"
+          />
         </div>
+      </main>
+      <footer className="app-footer">
+        <a
+          href="
+        https://github.com/ujj1225"
+        >
+          Made with ❤️ by Ujj1225 | Powered by Gemini AI
+        </a>
+      </footer>
+    </div>
+  );
+};
+
+const ResultBox = ({ title, content, size }) => {
+  const sizeClass = `result-box ${size}`;
+  return (
+    <div className={sizeClass}>
+      <h2>{title}</h2>
+      <div className="result-content">
+        {content || <em>No content available yet. Submit some text!</em>}
       </div>
-    </>
+    </div>
   );
 };
 
