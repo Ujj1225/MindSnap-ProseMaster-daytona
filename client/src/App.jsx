@@ -8,7 +8,7 @@ const App = () => {
   const [keyword, setKeyword] = useState("");
   const [mnemonics, setMnemonics] = useState("");
 
-  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
   const formatResponse = (text) => text.replace(/\*/g, "").trim();
 

@@ -23,11 +23,8 @@ The hassle free way to get started is by installing and running the code in dayt
 
 3. **Add gemini ai api key**:
    In the client folder, there is a .env file where you'll need to provide gemini api key
-   ```bash
-   VITE_API_KEY=
-   ```
 
-5. **Steps to Start the application**:
+4. **Steps to Start the application**:
    Navigate to client side by: 
 
    ```bash
